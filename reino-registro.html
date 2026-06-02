@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reino — Registro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Oswald:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100%;background:#D94F00}
+  body{font-family:'Oswald',sans-serif;background:#D94F00}
+
+  .page{max-width:520px;margin:0 auto;background:#D94F00;padding-bottom:40px}
+
+  .top-bar{display:flex;justify-content:space-between;padding:16px 24px 0;font-size:10px;letter-spacing:2px;color:#8B2800}
+  .hero{text-align:center;padding:10px 24px 0}
+  .hero h1{font-family:'UnifrakturMaguntia',serif;font-size:80px;color:#1a0a00;line-height:0.9}
+  .tagline{display:flex;justify-content:space-between;padding:12px 24px;font-size:10px;letter-spacing:1.5px;color:#8B2800;line-height:1.6}
+  .tagline span{max-width:46%}
+  .mid-labels{display:flex;justify-content:space-between;padding:4px 24px;font-size:9px;letter-spacing:2px;color:#8B2800}
+  .divider{border:none;border-top:0.5px solid #8B2800;margin:0 24px}
+
+  .form-area{padding:20px 24px 28px}
+  .section-tag{font-size:9px;letter-spacing:2.5px;color:#8B2800;margin-bottom:14px;margin-top:10px}
+  .opt-badge{font-size:8px;letter-spacing:1.5px;color:#b56040;margin-left:4px;vertical-align:middle}
+
+  .field{margin-bottom:16px}
+  .field label{display:block;font-size:10px;letter-spacing:1.5px;color:#8B2800;margin-bottom:6px}
+  .field input[type=text],
+  .field input[type=tel],
+  .field input[type=number],
+  .field input[type=date]{
+    width:100%;background:transparent;border:none;
+    border-bottom:0.5px solid #8B2800;padding:7px 0;
+    font-size:15px;font-family:'Oswald',sans-serif;
+    color:#1a0a00;outline:none;letter-spacing:0.5px
+  }
+  .field input[type=date]{color-scheme:light}
+  .field input::placeholder{color:#b56040;font-size:13px}
+  .field input:focus{border-bottom:1.5px solid #1a0a00}
+
+  .radio-row{display:flex;gap:12px;margin-top:6px}
+  .radio-opt{display:flex;align-items:center;gap:7px;font-size:13px;letter-spacing:1px;color:#1a0a00;cursor:pointer;padding:6px 0}
+  .radio-opt input{accent-color:#1a0a00;width:15px;height:15px}
+
+  .check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+  .check-opt{display:flex;align-items:center;gap:7px;font-size:11px;letter-spacing:1px;color:#1a0a00;cursor:pointer}
+  .check-opt input{accent-color:#1a0a00;width:14px;height:14px;flex-shrink:0}
+
+  .err{font-size:10px;color:#1a0a00;letter-spacing:1px;margin-top:4px;display:none;font-weight:500}
+
+  .cross-marks{padding:6px 0;display:flex;flex-direction:column;gap:5px;margin:4px 0}
+  .cross-mark{font-size:13px;color:#8B2800}
+
+  .disclaimer-box{border:0.5px solid #8B2800;padding:14px;margin-bottom:16px;background:rgba(26,10,0,0.08)}
+  .disclaimer-box .dis-label{font-size:9px;letter-spacing:1.5px;color:#8B2800;margin-bottom:8px}
+  .disclaimer-box p{font-size:11px;letter-spacing:0.5px;color:#1a0a00;line-height:1.7}
+  .accept-row{display:flex;align-items:flex-start;gap:9px;margin-top:12px;cursor:pointer}
+  .accept-row input{accent-color:#1a0a00;width:16px;height:16px;margin-top:2px;flex-shrink:0}
+  .accept-row span{font-size:10px;letter-spacing:1px;color:#1a0a00;line-height:1.6}
+
+  .bottom-bar{display:flex;justify-content:space-between;padding:14px 24px;font-size:9px;letter-spacing:2px;color:#8B2800}
+
+  .submit-btn{
+    display:block;width:calc(100% - 48px);margin:0 24px;
+    padding:15px;background:#1a0a00;color:#D94F00;border:none;
+    font-family:'Oswald',sans-serif;font-size:15px;letter-spacing:3px;
+    cursor:pointer;text-transform:uppercase;transition:opacity 0.15s
+  }
+  .submit-btn:hover{opacity:0.82}
+  .submit-btn:active{transform:scale(0.99)}
+
+  .success{
+    display:none;text-align:center;padding:4rem 2rem;
+    background:#1a0a00;margin:0 24px;border-radius:4px
+  }
+  .success h2{font-family:'UnifrakturMaguntia',serif;font-size:52px;color:#D94F00}
+  .success .suc-marks{font-size:18px;color:#8B2800;margin:12px 0}
+  .success p{font-size:11px;letter-spacing:2px;color:#8B2800;margin-top:8px;line-height:1.7}
+
+  .qr-section{
+    text-align:center;margin:32px 24px 0;
+    padding:24px;background:#1a0a00;border-radius:4px
+  }
+  .qr-section .qr-top{font-size:9px;letter-spacing:2.5px;color:#8B2800;margin-bottom:16px}
+  #qr-div{display:inline-block}
+  #qr-div img,#qr-div canvas{border-radius:4px;display:block}
+  .qr-section .qr-bot{font-size:9px;letter-spacing:2px;color:#8B2800;margin-top:12px}
+
+  /* EQUIPAMIENTO */
+  .equip-section{background:#1a0a00;margin:32px 0 0;padding-bottom:8px}
+  .equip-top-bar{display:flex;justify-content:space-between;padding:16px 24px 0;font-size:10px;letter-spacing:2px;color:#5a2800}
+  .equip-hero{text-align:center;padding:10px 24px 4px}
+  .equip-hero span{font-family:'UnifrakturMaguntia',serif;font-size:42px;color:#D94F00;line-height:1}
+  .equip-divider{border:none;border-top:0.5px solid #5a2800;margin:8px 24px}
+  .equip-body{padding:16px 24px 20px}
+  .equip-cat-label{font-size:9px;letter-spacing:2.5px;color:#8B2800;margin-bottom:12px}
+  .equip-list{list-style:none;margin-bottom:4px}
+  .equip-list li{font-size:12px;letter-spacing:0.8px;color:#D94F00;padding:5px 0;border-bottom:0.5px solid #2e1000;line-height:1.5}
+  .equip-list li::before{content:'✦';font-size:8px;color:#8B2800;margin-right:8px;vertical-align:middle}
+  .equip-cross{font-size:11px;color:#5a2800;text-align:center;padding:12px 0;letter-spacing:4px}
+  .equip-category{margin-bottom:4px}
+  .equip-bottom-bar{display:flex;justify-content:space-between;padding:12px 24px 8px;font-size:9px;letter-spacing:2px;color:#5a2800}
+
+  @media(max-width:540px){
+    .hero h1{font-size:64px}
+    .check-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="top-bar"><span>REINO</span><span>REGISTRO</span></div>
+  <div class="hero"><h1>Reino</h1></div>
+  <div class="tagline">
+    <span>REGISTRO OFICIAL.<br>DATOS PERSONALES<br>Y DE SALUD.</span>
+    <span style="text-align:right">CAMPOS CON *<br>SON<br>REQUERIDOS.</span>
+  </div>
+  <div class="mid-labels"><span>INFORMACIÓN</span><span>PERSONAL</span></div>
+  <hr class="divider">
+
+  <div class="form-area" id="main-form">
+
+    <!-- DATOS GENERALES -->
+    <div class="section-tag">— DATOS GENERALES</div>
+
+    <div class="field">
+      <label>NOMBRE COMPLETO *</label>
+      <input type="text" id="nombre" placeholder="Escribe tu nombre completo">
+      <div class="err" id="err-nombre">CAMPO REQUERIDO</div>
+    </div>
+
+    <div class="field">
+      <label>FECHA DE NACIMIENTO *</label>
+      <input type="date" id="fecha_nac">
+      <div class="err" id="err-fecha_nac">CAMPO REQUERIDO</div>
+    </div>
+
+    <div class="field">
+      <label>DIRECCIÓN *</label>
+      <input type="text" id="direccion" placeholder="Calle, ciudad, estado, código postal">
+      <div class="err" id="err-direccion">CAMPO REQUERIDO</div>
+    </div>
+
+    <div class="field">
+      <label>NÚMERO PERSONAL *</label>
+      <input type="tel" id="telefono" placeholder="222 123 4567">
+      <div class="err" id="err-telefono">CAMPO REQUERIDO</div>
+    </div>
+
+    <div class="field">
+      <label>EDAD *</label>
+      <input type="number" id="edad" placeholder="25" min="1" max="120" style="width:120px">
+      <div class="err" id="err-edad">CAMPO REQUERIDO</div>
+    </div>
+
+    <div class="cross-marks">
+      <span class="cross-mark">✦</span>
+      <span class="cross-mark">✛</span>
+      <span class="cross-mark">✦</span>
+    </div>
+
+    <!-- SALUD -->
+    <div class="section-tag">— SALUD</div>
+
+    <div class="field">
+      <label>¿PADECES ALGUNA ENFERMEDAD? *</label>
+      <input type="text" id="enfermedad" placeholder="Diabetes, hipertensión, ninguna...">
+      <div class="err" id="err-enfermedad">CAMPO REQUERIDO</div>
+    </div>
+
+    <div class="field">
+      <label>¿HAS TENIDO FIEBRE, TOS SECA, DOLOR DE CABEZA O GARGANTA, O PÉRDIDA DEL OLFATO/GUSTO EN LOS ÚLTIMOS 4 DÍAS? *</label>
+      <div class="radio-row">
+        <label class="radio-opt"><input type="radio" name="sintomas" value="Sí"> SÍ</label>
+        <label class="radio-opt"><input type="radio" name="sintomas" value="No"> NO</label>
+      </div>
+      <div class="err" id="err-sintomas">SELECCIONA UNA OPCIÓN</div>
+    </div>
+
+    <div class="cross-marks">
+      <span class="cross-mark">✦</span>
+      <span class="cross-mark">✛</span>
+      <span class="cross-mark">✦</span>
+    </div>
+
+    <!-- EMERGENCIA -->
+    <div class="section-tag">— EMERGENCIA</div>
+
+    <div class="field">
+      <label>CONTACTO DE EMERGENCIA *</label>
+      <input type="text" id="emergencia" placeholder="Nombre, parentesco y teléfono">
+      <div class="err" id="err-emergencia">CAMPO REQUERIDO</div>
+    </div>
+
+    <div class="cross-marks">
+      <span class="cross-mark">✦</span>
+      <span class="cross-mark">✛</span>
+      <span class="cross-mark">✦</span>
+    </div>
+
+    <!-- REDES SOCIALES -->
+    <div class="section-tag">— REDES SOCIALES <span class="opt-badge">OPCIONAL</span></div>
+
+    <div class="field">
+      <label>INSTAGRAM</label>
+      <input type="text" id="instagram" placeholder="@usuario">
+    </div>
+    <div class="field">
+      <label>FACEBOOK</label>
+      <input type="text" id="facebook" placeholder="Nombre en Facebook">
+    </div>
+    <div class="field">
+      <label>OTRA RED SOCIAL</label>
+      <input type="text" id="otra_red" placeholder="TikTok, X, YouTube...">
+    </div>
+
+    <div class="cross-marks">
+      <span class="cross-mark">✦</span>
+      <span class="cross-mark">✛</span>
+      <span class="cross-mark">✦</span>
+    </div>
+
+    <!-- ACTIVIDADES RECREATIVAS -->
+    <div class="section-tag">— ACTIVIDADES RECREATIVAS <span class="opt-badge">OPCIONAL</span></div>
+
+    <div class="field">
+      <label>DEPORTIVAS</label>
+      <div class="check-grid">
+        <label class="check-opt"><input type="checkbox" name="dep" value="Fútbol"> FÚTBOL</label>
+        <label class="check-opt"><input type="checkbox" name="dep" value="Basquetbol"> BASQUETBOL</label>
+        <label class="check-opt"><input type="checkbox" name="dep" value="Natación"> NATACIÓN</label>
+        <label class="check-opt"><input type="checkbox" name="dep" value="Atletismo"> ATLETISMO</label>
+        <label class="check-opt"><input type="checkbox" name="dep" value="Voleibol"> VOLEIBOL</label>
+        <label class="check-opt"><input type="checkbox" name="dep" value="Otro deporte"> OTRO</label>
+      </div>
+    </div>
+
+    <div class="field" style="margin-top:12px">
+      <label>ARTÍSTICAS</label>
+      <div class="check-grid">
+        <label class="check-opt"><input type="checkbox" name="art" value="Música"> MÚSICA</label>
+        <label class="check-opt"><input type="checkbox" name="art" value="Dibujo/Pintura"> DIBUJO / PINTURA</label>
+        <label class="check-opt"><input type="checkbox" name="art" value="Teatro"> TEATRO</label>
+        <label class="check-opt"><input type="checkbox" name="art" value="Danza"> DANZA</label>
+        <label class="check-opt"><input type="checkbox" name="art" value="Fotografía"> FOTOGRAFÍA</label>
+        <label class="check-opt"><input type="checkbox" name="art" value="Otra artística"> OTRA</label>
+      </div>
+    </div>
+
+    <div class="field" style="margin-top:12px">
+      <label>EDUCATIVAS</label>
+      <div class="check-grid">
+        <label class="check-opt"><input type="checkbox" name="edu" value="Lectura"> LECTURA</label>
+        <label class="check-opt"><input type="checkbox" name="edu" value="Idiomas"> IDIOMAS</label>
+        <label class="check-opt"><input type="checkbox" name="edu" value="Ciencias"> CIENCIAS</label>
+        <label class="check-opt"><input type="checkbox" name="edu" value="Tecnología"> TECNOLOGÍA</label>
+        <label class="check-opt"><input type="checkbox" name="edu" value="Manualidades"> MANUALIDADES</label>
+        <label class="check-opt"><input type="checkbox" name="edu" value="Otra educativa"> OTRA</label>
+      </div>
+    </div>
+
+    <div class="cross-marks">
+      <span class="cross-mark">✦</span>
+      <span class="cross-mark">✛</span>
+      <span class="cross-mark">✦</span>
+    </div>
+
+    <!-- INVITACIÓN -->
+    <div class="section-tag">— INVITACIÓN</div>
+
+    <div class="field">
+      <label>SI VISITAS NUESTRA IGLESIA, ¿DE QUIÉN ERES INVITADO? <span class="opt-badge">OPCIONAL</span></label>
+      <input type="text" id="invitado" placeholder="Nombre de quien te invitó">
+    </div>
+
+    <div class="cross-marks">
+      <span class="cross-mark">✦</span>
+      <span class="cross-mark">✛</span>
+      <span class="cross-mark">✦</span>
+    </div>
+
+    <!-- AUTORIZACIONES -->
+    <div class="section-tag">— AUTORIZACIONES *</div>
+
+    <div class="disclaimer-box">
+      <div class="dis-label">CONSENTIMIENTO PARENTAL</div>
+      <p>Como padre, madre o tutor legal del participante, autorizo su asistencia y participación en todas las actividades del evento organizado por Reino. Declaro estar informado(a) de las actividades a realizar y doy mi consentimiento para que el participante tome parte en ellas.</p>
+      <label class="accept-row">
+        <input type="checkbox" id="consentimiento">
+        <span>CONFIRMO QUE CUENTO CON EL CONSENTIMIENTO DE MIS PADRES O TUTOR LEGAL PARA PARTICIPAR EN ESTE EVENTO. *</span>
+      </label>
+      <div class="err" id="err-consentimiento">DEBES ACEPTAR PARA CONTINUAR</div>
+    </div>
+
+    <div class="disclaimer-box">
+      <div class="dis-label">DESLINDE DE RESPONSABILIDAD</div>
+      <p>Al participar en las actividades de Reino, el asistente y/o su tutor reconoce y acepta que la organización no se hace responsable por accidentes, lesiones, pérdidas o daños de cualquier naturaleza que pudieran ocurrir durante el evento. La participación es completamente voluntaria y bajo responsabilidad propia del participante o su tutor legal.</p>
+      <label class="accept-row">
+        <input type="checkbox" id="deslinde">
+        <span>HE LEÍDO Y ACEPTO EL DESLINDE DE RESPONSABILIDAD. ENTIENDO QUE REINO NO SE HACE RESPONSABLE POR CUALQUIER INCIDENTE QUE OCURRA DURANTE EL EVENTO. *</span>
+      </label>
+      <div class="err" id="err-deslinde">DEBES ACEPTAR PARA CONTINUAR</div>
+    </div>
+
+  </div><!-- /form-area -->
+
+  <div class="bottom-bar" id="bottom-bar"><span>LORD</span><span>THE KINGDOM</span></div>
+  <button class="submit-btn" id="submit-btn" onclick="submitForm()">Enviar registro</button>
+
+  <!-- PANTALLA DE ÉXITO -->
+  <div class="success" id="success-msg">
+    <h2>Reino</h2>
+    <div class="suc-marks">✦ ✛ ✦</div>
+    <p>REGISTRO COMPLETADO</p>
+    <p style="margin-top:16px">GRACIAS POR COMPLETAR EL FORMULARIO.<br>¡TE ESPERAMOS!</p>
+  </div>
+
+  <!-- LISTA DE EQUIPAMIENTO -->
+  <div class="equip-section">
+
+    <div class="equip-top-bar"><span>REINO</span><span>CAMPAMENTO</span></div>
+    <div class="equip-hero"><span>Lo que debes traer</span></div>
+    <hr class="equip-divider">
+
+    <div class="equip-body">
+
+      <div class="equip-category">
+        <div class="equip-cat-label">— ELEMENTOS PERSONALES</div>
+        <ul class="equip-list">
+          <li>Ropa cómoda — playeras, pantalones, sudaderas</li>
+          <li>Zapatos y sandalias para descanso</li>
+          <li>Artículos de higiene — cepillo de dientes, jabón, shampoo, toalla</li>
+          <li>Protección solar — bloqueador, gorra, lentes de sol</li>
+        </ul>
+      </div>
+
+      <div class="equip-cross">✦ &nbsp; ✛ &nbsp; ✦</div>
+
+      <div class="equip-category">
+        <div class="equip-cat-label">— EQUIPO DE CAMPAMENTO</div>
+        <ul class="equip-list">
+          <li>Sleeping bag o cobija ligera</li>
+          <li>Botella de agua reutilizable</li>
+        </ul>
+      </div>
+
+      <div class="equip-cross">✦ &nbsp; ✛ &nbsp; ✦</div>
+
+      <div class="equip-category">
+        <div class="equip-cat-label">— CRECIMIENTO</div>
+        <ul class="equip-list">
+          <li>Biblia</li>
+          <li>Cuaderno y pluma para notas de prédicas y reflexiones</li>
+          <li>Actitud de servicio — disposición para ayudar en tareas del campamento</li>
+        </ul>
+      </div>
+
+      <div class="equip-cross">✦ &nbsp; ✛ &nbsp; ✦</div>
+
+      <div class="equip-category">
+        <div class="equip-cat-label">— EXTRAS ÚTILES</div>
+        <ul class="equip-list">
+          <li>Snacks saludables — fruta seca, barras energéticas</li>
+          <li>Medicamentos personales si los necesitas</li>
+          <li>Ropa formal ligera para servicios especiales</li>
+        </ul>
+      </div>
+
+    </div><!-- /equip-body -->
+
+    <div class="equip-bottom-bar"><span>LORD</span><span>THE KINGDOM</span></div>
+  </div>
+
+  <!-- QR -->
+  <div class="qr-section">
+    <div class="qr-top">COMPARTE EL FORMULARIO</div>
+    <div id="qr-div"></div>
+    <div class="qr-bot">ESCANEA PARA REGISTRARTE</div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+  document.getElementById('fecha_nac').max = new Date().toISOString().split('T')[0];
+
+  function val(id){
+    const el = document.getElementById(id);
+    const err = document.getElementById('err-' + id);
+    if (!el || !el.value.trim()) { if(err) err.style.display='block'; return false; }
+    if(err) err.style.display='none';
+    return true;
+  }
+  function valCheck(id){
+    const el = document.getElementById(id);
+    const err = document.getElementById('err-' + id);
+    if (!el || !el.checked) { if(err) err.style.display='block'; return false; }
+    if(err) err.style.display='none';
+    return true;
+  }
+
+  function submitForm(){
+    let ok = true;
+    ['nombre','fecha_nac','direccion','telefono','edad','enfermedad','emergencia'].forEach(id => { if(!val(id)) ok = false; });
+    if(!document.querySelector('input[name="sintomas"]:checked')){
+      document.getElementById('err-sintomas').style.display='block'; ok=false;
+    } else { document.getElementById('err-sintomas').style.display='none'; }
+    if(!valCheck('consentimiento')) ok=false;
+    if(!valCheck('deslinde')) ok=false;
+    if(!ok){
+      const firstErr = document.querySelector('.err[style*="block"]');
+      if(firstErr) firstErr.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+    document.getElementById('main-form').style.display='none';
+    document.getElementById('bottom-bar').style.display='none';
+    document.getElementById('submit-btn').style.display='none';
+    document.getElementById('success-msg').style.display='block';
+  }
+
+  window.addEventListener('load', function(){
+    const url = window.location.href.split('?')[0];
+    new QRCode(document.getElementById('qr-div'), {
+      text: url,
+      width: 160,
+      height: 160,
+      colorDark: '#D94F00',
+      colorLight: '#1a0a00',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  });
+</script>
+</body>
+</html>
